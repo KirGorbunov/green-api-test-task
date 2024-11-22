@@ -4,31 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Interface</title>
+    <!-- Подключение шрифта Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Подключение вашего файла стилей -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div class="container">
     <div class="left-panel">
         <div class="form-group">
-            <input type="text" placeholder="idInstance">
+            <label for="idInstance">idInstance</label>
+            <input type="text" id="idInstance" placeholder="Введите idInstance">
         </div>
         <div class="form-group">
-            <input type="text" placeholder="apiTokenInstance">
+            <label for="apiTokenInstance">apiTokenInstance</label>
+            <input type="text" id="apiTokenInstance" placeholder="Введите apiTokenInstance">
         </div>
         <button>GetSettings</button>
         <button>GetStateInstance</button>
         <div class="form-group">
-            <input type="text" placeholder="Phone number">
+            <label for="phoneNumber1">Номер телефона</label>
+            <input type="text" id="phoneNumber1" placeholder="Введите номер телефона">
         </div>
         <div class="form-group">
-            <input type="text" placeholder="Message">
+            <label for="message">Сообщение</label>
+            <input type="text" id="message" placeholder="Введите сообщение">
         </div>
         <button>SendMessage</button>
         <div class="form-group">
-            <input type="text" placeholder="Phone number">
+            <label for="phoneNumber2">Номер телефона</label>
+            <input type="text" id="phoneNumber2" placeholder="Введите номер телефона">
         </div>
         <div class="form-group">
-            <input type="text" placeholder="File path">
+            <label for="filePath">Путь к файлу</label>
+            <input type="text" id="filePath" placeholder="Введите путь к файлу">
         </div>
         <button>SendFileByUrl</button>
     </div>
