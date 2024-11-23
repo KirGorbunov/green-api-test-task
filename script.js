@@ -1,34 +1,50 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const getSettingsButton = document.querySelector('button:nth-of-type(1)');
-    const responseBox = document.querySelector('.response-box pre');
+// Получение ссылки на элементы интерфейса
+const idInstanceInput = document.getElementById('idInstance');
+const apiTokenInput = document.getElementById('apiTokenInstance');
+const phoneNumber1Input = document.getElementById('phoneNumber1');
+const messageInput = document.getElementById('message');
+const phoneNumber2Input = document.getElementById('phoneNumber2');
+const fileLinkInput = document.getElementById('fileLink');
+const responseBox = document.querySelector('.response-box pre');
 
-    getSettingsButton.addEventListener('click', async () => {
-        const idInstance = document.getElementById('idInstance').value.trim();
-        const apiTokenInstance = document.getElementById('apiTokenInstance').value.trim();
+// Базовый URL API
+const BASE_URL = 'http://0.0.0.0:3000';
 
-        if (!idInstance || !apiTokenInstance) {
-            responseBox.textContent = 'Пожалуйста, заполните поля idInstance и apiTokenInstance.';
+// Функция для отправки запросов
+async function sendRequest(endpoint, method = 'GET', body = null) {
+    try {
+        const idInstance = idInstanceInput.value.trim();
+        const apiToken = apiTokenInput.value.trim();
+
+        if (!idInstance || !apiToken) {
+            alert('Пожалуйста, заполните idInstance и apiTokenInstance');
             return;
         }
 
-        const apiUrl = `http://0.0.0.0:3000/${idInstance}/GetSettings/${apiTokenInstance}`;
+        const url = `${BASE_URL}/${idInstance}/${endpoint}/${apiToken}`;
+        const options = {
+            method,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: body ? JSON.stringify(body) : null,
+        };
 
-        try {
-            const response = await fetch(apiUrl, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
+        const response = await fetch(url, options);
+        const data = await response.json();
 
-            if (!response.ok) {
-                throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
-            }
+        // Отображение ответа в правой панели
+        responseBox.textContent = JSON.stringify(data, null, 2);
+    } catch (error) {
+        responseBox.textContent = `Ошибка: ${error.message}`;
+    }
+}
 
-            const data = await response.json();
-            responseBox.textContent = JSON.stringify(data, null, 2);
-        } catch (error) {
-            responseBox.textContent = `Ошибка при выполнении запроса: ${error.message}`;
-        }
-    });
+// Обработчики кнопок
+document.querySelector('button:nth-of-type(1)').addEventListener('click', () => {
+    sendRequest('GetSettings', 'GET');
+});
+
+document.querySelector('button:nth-of-type(2)').addEventListener('click', () => {
+    sendRequest('GetStateInstance', 'GET');
 });

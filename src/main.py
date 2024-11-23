@@ -12,9 +12,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/{idInstance}/GetSettings/{apiTokenInstance}")
-async def get_settings(idInstance: str, apiTokenInstance: str):
-    api_url = f"https://1103.api.green-api.com/waInstance{idInstance}/getSettings/{apiTokenInstance}"
+@app.get("/{idInstance}/{method}/{apiTokenInstance}")
+async def account(idInstance: str, method: str, apiTokenInstance: str):
+    api_url = f"https://1103.api.green-api.com/waInstance{idInstance}/{method}/{apiTokenInstance}"
 
     try:
         response = requests.get(api_url)
