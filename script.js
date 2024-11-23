@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const apiUrl = `https://1103.api.green-api.com/${idInstance}/GetSettings/${apiTokenInstance}`;
+        const apiUrl = `http://0.0.0.0:3000/${idInstance}/GetSettings/${apiTokenInstance}`;
 
         try {
             const response = await fetch(apiUrl, {
