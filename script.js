@@ -63,3 +63,19 @@ document.querySelector('button:nth-of-type(3)').addEventListener('click', () => 
         message,
     });
 });
+
+document.querySelector('button:nth-of-type(4)').addEventListener('click', () => {
+    const phoneNumber = phoneNumber2Input.value.trim();
+    const fileLink = fileLinkInput.value.trim();
+
+    if (!phoneNumber || !fileLink) {
+        alert('Пожалуйста, заполните номер телефона и ссылку на файл');
+        return;
+    }
+
+    sendRequest('SendFileByUrl', 'POST', {
+        chatId: `${phoneNumber}@c.us`,
+        urlFile: fileLink,
+        fileName: 'file',
+    });
+});
