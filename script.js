@@ -48,3 +48,18 @@ document.querySelector('button:nth-of-type(1)').addEventListener('click', () => 
 document.querySelector('button:nth-of-type(2)').addEventListener('click', () => {
     sendRequest('GetStateInstance', 'GET');
 });
+
+document.querySelector('button:nth-of-type(3)').addEventListener('click', () => {
+    const phoneNumber = phoneNumber1Input.value.trim();
+    const message = messageInput.value.trim();
+
+    if (!phoneNumber || !message) {
+        alert('Пожалуйста, заполните номер телефона и сообщение');
+        return;
+    }
+
+    sendRequest('SendMessage', 'POST', {
+        chatId: `${phoneNumber}@c.us`,
+        message,
+    });
+});
