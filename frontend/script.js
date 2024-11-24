@@ -1,3 +1,24 @@
+// Загрузка конфигурации из JSON
+async function loadConfig() {
+    const response = await fetch('./config.json');
+    if (!response.ok) {
+        throw new Error('Не удалось загрузить конфигурационный файл');
+    }
+    return response.json();
+}
+
+let BASE_URL;
+
+loadConfig()
+    .then(config => {
+        BASE_URL = config.BASE_URL;
+
+        console.log('BASE_URL загружен:', BASE_URL);
+    })
+    .catch(error => {
+        console.error('Ошибка загрузки конфигурации:', error);
+    });
+
 // Получение ссылки на элементы интерфейса
 const idInstanceInput = document.getElementById('idInstance');
 const apiTokenInput = document.getElementById('apiTokenInstance');
@@ -21,9 +42,8 @@ async function sendRequest(endpoint, method = 'GET', body = null) {
 
         // Определяем базовый URL в зависимости от выбора API
         const selectedAPI = apiSelector.value;
-        const BASE_URL = `http://93.183.82.240/${selectedAPI}`;
 
-        const url = `${BASE_URL}/waInstance${idInstance}/${endpoint}/${apiToken}`;
+        const url = `${BASE_URL}/${selectedAPI}/waInstance${idInstance}/${endpoint}/${apiToken}`;
         const options = {
             method,
             headers: {
