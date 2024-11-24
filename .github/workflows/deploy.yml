@@ -18,16 +18,12 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Add SSH host to known_hosts
+      - name: Execute SSH Command with Password
         run: |
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Execute SSH Command
-        run: |
-          sshpass -p "${{ secrets.SSH_KEY_PASSPHRASE }}" ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} "echo 'Connected successfully!'"
+          sshpass -p "${{ secrets.SSH_KEY_PASSPHRASE }}" ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }} "echo 'Connected successfully!'"
         env:
           SSH_KEY_PASSPHRASE: ${{ secrets.SSH_KEY_PASSPHRASE }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
