@@ -42,14 +42,14 @@ jobs:
 
       - name: Copy repository to server
         run: |
-          sshpass -p "${{ secrets.SSH_KEY_PASSPHRASE }}" rsync -avz -e "ssh -o StrictHostKeyChecking=no" ./ ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.USERNAME }}/app
+          sshpass -p "${{ secrets.SSH_KEY_PASSPHRASE }}" rsync -avz -e "ssh -o StrictHostKeyChecking=no" ./ ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }}:/${{ secrets.USERNAME }}/green-api-test-task
         env:
           SSH_KEY_PASSPHRASE: ${{ secrets.SSH_KEY_PASSPHRASE }}
 
       - name: Rebuild and Run Docker Compose
         run: |
           sshpass -p "${{ secrets.SSH_KEY_PASSPHRASE }}" ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }} <<EOF
-            cd /home/${{ secrets.USERNAME }}/app
+            cd /${{ secrets.USERNAME }}/green-api-test-task
             docker compose up --build -d
           EOF
         env:
