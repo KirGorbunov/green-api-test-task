@@ -59,6 +59,14 @@ jobs:
         env:
           SSH_KEY_PASSPHRASE: ${{ secrets.SSH_KEY_PASSPHRASE }}
 
+      - name: Authenticate with Docker Hub
+        run: |
+          sshpass -p "${{ secrets.SSH_KEY_PASSPHRASE }}" ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }} <<EOF
+            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          EOF
+        env:
+          SSH_KEY_PASSPHRASE: ${{ secrets.SSH_KEY_PASSPHRASE }}
+
       - name: Rebuild and Run Docker Compose
         run: |
           sshpass -p "${{ secrets.SSH_KEY_PASSPHRASE }}" ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }} <<EOF
