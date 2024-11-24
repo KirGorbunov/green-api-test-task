@@ -1,0 +1,64 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Check and Install Docker on Remote Server
+      run: |
+        ssh -o StrictHostKeyChecking=no root@93.183.82.240 << 'EOF'
+        # Проверка наличия Docker
+        if ! [ -x "$(command -v docker)" ]; then
+          echo "Docker not found. Installing Docker..."
+          sudo apt update
+          sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+          sudo apt update
+          sudo apt install -y docker-ce docker-ce-cli containerd.io
+          sudo usermod -aG docker $USER
+        else
+          echo "Docker is already installed. Skipping installation."
+        fi
+
+        # Проверка установки Docker
+        docker --version
+        EOF
+
+    - name: Check and Install Docker Compose on Remote Server
+      run: |
+        ssh -o StrictHostKeyChecking=no root@93.183.82.240 << 'EOF'
+        # Проверка наличия Docker Compose
+        if ! [ -x "$(command -v docker-compose)" ]; then
+          echo "Docker Compose not found. Installing Docker Compose..."
+          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+        else
+          echo "Docker Compose is already installed. Skipping installation."
+        fi
+
+        # Проверка установки Docker Compose
+        docker-compose --version
+        EOF
+
+    - name: Deploy application
+      run: |
+        ssh -o StrictHostKeyChecking=no root@93.183.82.240 << 'EOF'
+        cd /path/to/your/project
+        git pull origin main
+        docker-compose up -d --build
+        EOF
