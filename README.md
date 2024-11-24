@@ -39,17 +39,14 @@
    cp .env.example .env
    ```
    
-4. Поменять ip-адрес в файле config.js (лежит папке configs):
-   ```bash
-   C http://93.183.82.240 на http://localhost
-   ```
+4. Поменять ip-адрес в файле config.js (лежит папке configs) c http://93.183.82.240 на http://localhost
 
-4. Запустите docker compose:
+5. Запустите docker compose:
    ```bash
    docker compose up
    ```
 
-5. Открыть браузер и перейти на localhost:
+6. Открыть браузер и перейти на localhost:
    ```bash
    http://localhost/
    ```
