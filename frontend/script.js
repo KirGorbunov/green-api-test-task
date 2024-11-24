@@ -21,7 +21,7 @@ async function sendRequest(endpoint, method = 'GET', body = null) {
 
         // Определяем базовый URL в зависимости от выбора API
         const selectedAPI = apiSelector.value;
-        const BASE_URL = `http://localhost/${selectedAPI}`;
+        const BASE_URL = `http://93.183.82.240/${selectedAPI}`;
 
         const url = `${BASE_URL}/waInstance${idInstance}/${endpoint}/${apiToken}`;
         const options = {

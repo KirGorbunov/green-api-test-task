@@ -71,7 +71,7 @@ jobs:
         run: |
           sshpass -p "${{ secrets.SSH_KEY_PASSPHRASE }}" ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }} <<EOF
             cd /${{ secrets.USERNAME }}/green-api-test-task
-            docker compose up -d
+            docker compose up --build -d
           EOF
         env:
           SSH_KEY_PASSPHRASE: ${{ secrets.SSH_KEY_PASSPHRASE }}
