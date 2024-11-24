@@ -3,11 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green api test task</title>
+    <title>Green API Test Task</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
+<div class="proxy-selector">
+    <label for="apiSelector">Выберите proxy:</label>
+    <select id="apiSelector">
+        <option value="external-api">Nginx proxy</option>
+        <option value="app">FastAPI proxy</option>
+    </select>
+</div>
+
 <div class="container">
     <div class="left-panel">
         <div class="form-group">
@@ -35,15 +43,14 @@
         </div>
         <div class="form-group">
             <label for="fileLink">Ссылка на файл</label>
-            <input type="text" id="fileLink" placeholder="https://clck.ru/3EmrN7">
+            <input type="text" id="fileLink" placeholder="https://images.ru/some_image.jpeg">
         </div>
         <button>SendFileByUrl</button>
     </div>
     <div class="right-panel">
         <h3>Ответ:</h3>
         <div class="response-box">
-                <pre>
-                </pre>
+            <pre></pre>
         </div>
     </div>
 </div>

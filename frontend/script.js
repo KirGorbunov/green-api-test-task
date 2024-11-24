@@ -5,10 +5,8 @@ const phoneNumber1Input = document.getElementById('phoneNumber1');
 const messageInput = document.getElementById('message');
 const phoneNumber2Input = document.getElementById('phoneNumber2');
 const fileLinkInput = document.getElementById('fileLink');
+const apiSelector = document.getElementById('apiSelector');
 const responseBox = document.querySelector('.response-box pre');
-
-// Базовый URL API
-const BASE_URL = 'http://localhost/app/';
 
 // Функция для отправки запросов
 async function sendRequest(endpoint, method = 'GET', body = null) {
@@ -21,7 +19,11 @@ async function sendRequest(endpoint, method = 'GET', body = null) {
             return;
         }
 
-        const url = `${BASE_URL}/${idInstance}/${endpoint}/${apiToken}`;
+        // Определяем базовый URL в зависимости от выбора API
+        const selectedAPI = apiSelector.value;
+        const BASE_URL = `http://localhost/${selectedAPI}`;
+
+        const url = `${BASE_URL}/waInstance${idInstance}/${endpoint}/${apiToken}`;
         const options = {
             method,
             headers: {
@@ -40,7 +42,7 @@ async function sendRequest(endpoint, method = 'GET', body = null) {
     }
 }
 
-// Обработчики кнопок
+// Обработчики кнопок (остались без изменений)
 document.querySelector('button:nth-of-type(1)').addEventListener('click', () => {
     sendRequest('GetSettings', 'GET');
 });

@@ -22,7 +22,7 @@ class FileData(BaseModel):
     urlFile: str
     fileName: str
 
-@app.get("/{idInstance}/{method}/{apiTokenInstance}")
+@app.get("/waInstance{idInstance}/{method}/{apiTokenInstance}")
 async def account(idInstance: str, method: str, apiTokenInstance: str):
     api_url = f"https://1103.api.green-api.com/waInstance{idInstance}/{method}/{apiTokenInstance}"
 
@@ -34,7 +34,7 @@ async def account(idInstance: str, method: str, apiTokenInstance: str):
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=500, detail=f"Ошибка при запросе к внешнему API: {str(e)}")
 
-@app.post("/{idInstance}/SendMessage/{apiTokenInstance}")
+@app.post("/waInstance{idInstance}/SendMessage/{apiTokenInstance}")
 async def send_message(idInstance: str, apiTokenInstance: str, msg_data: MessageData):
     api_url = f"https://1103.api.green-api.com/waInstance{idInstance}/SendMessage/{apiTokenInstance}"
 
@@ -46,7 +46,7 @@ async def send_message(idInstance: str, apiTokenInstance: str, msg_data: Message
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=500, detail=f"Ошибка при отправке сообщения: {str(e)}")
 
-@app.post("/{idInstance}/SendFileByUrl/{apiTokenInstance}")
+@app.post("/waInstance{idInstance}/SendFileByUrl/{apiTokenInstance}")
 async def send_file_by_url(idInstance: str, apiTokenInstance: str, file_data: FileData):
     api_url = f"https://1103.api.green-api.com/waInstance{idInstance}/SendFileByUrl/{apiTokenInstance}"
     try:
