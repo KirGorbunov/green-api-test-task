@@ -13,10 +13,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Set up SSH with passphrase
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        echo "${{ secrets.SSH_KEY_PASSPHRASE }}" | ssh-keygen -p -P "" -N "" -f ~/.ssh/id_rsa
+        ssh-keyscan -H 93.183.82.240 >> ~/.ssh/known_hosts
 
     - name: Check and Install Docker on Remote Server
       run: |
@@ -58,7 +61,7 @@ jobs:
     - name: Deploy application
       run: |
         ssh -o StrictHostKeyChecking=no root@93.183.82.240 << 'EOF'
-        cd /path/to/your/project
+        cd /root/green-api-test-task
         git pull origin main
         docker-compose up -d --build
         EOF
