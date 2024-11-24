@@ -8,7 +8,7 @@ const fileLinkInput = document.getElementById('fileLink');
 const responseBox = document.querySelector('.response-box pre');
 
 // Базовый URL API
-const BASE_URL = 'http://0.0.0.0:3000';
+const BASE_URL = 'http://localhost/app/';
 
 // Функция для отправки запросов
 async function sendRequest(endpoint, method = 'GET', body = null) {

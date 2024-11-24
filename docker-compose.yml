@@ -11,12 +11,11 @@ services:
       - "${FASTAPI_PORT}"
 
   nginx:
-    image: nginx:1.25.4
+    image: nginx:latest
     volumes:
-      - ./frontend/:/usr/share/nginx/html:ro
-      - ./configs/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./configs/site.conf:/etc/nginx/conf.d/site.conf:ro
+      - ./configs/nginx.conf:/etc/nginx/nginx.conf
+      - ./frontend:/usr/share/nginx/html
+    ports:
+      - "80:80"
     depends_on:
       - app
-    ports:
-      - '80:80'
