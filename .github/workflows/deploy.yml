@@ -27,7 +27,7 @@ jobs:
 
       - name: Execute SSH Command
         run: |
-          sshpass -p "${{ secrets.SSH_KEY_PASSPHRASE }}" ssh -o StrictHostKeyChecking=no user@${{ secrets.SSH_HOST }} "echo 'Connected successfully!'"
+          sshpass -p "${{ secrets.SSH_KEY_PASSPHRASE }}" ssh -o StrictHostKeyChecking=no user@${{ secrets.USERNAME }} "echo 'Connected successfully!'"
         env:
           SSH_KEY_PASSPHRASE: ${{ secrets.SSH_KEY_PASSPHRASE }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
