@@ -42,7 +42,20 @@ jobs:
 
       - name: Copy repository to server
         run: |
-          sshpass -p "${{ secrets.SSH_KEY_PASSPHRASE }}" rsync -avz -e "ssh -o StrictHostKeyChecking=no" ./ ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }}:/${{ secrets.USERNAME }}/green-api-test-task
+          sshpass -p "${{ secrets.SSH_KEY_PASSPHRASE }}" rsync -avz --progress -e "ssh -o StrictHostKeyChecking=no" ./ ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }}:/${{ secrets.USERNAME }}/green-api-test-task
+        env:
+          SSH_KEY_PASSPHRASE: ${{ secrets.SSH_KEY_PASSPHRASE }}
+
+      - name: Rename .env.example to .env
+        run: |
+          sshpass -p "${{ secrets.SSH_KEY_PASSPHRASE }}" ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }} <<EOF
+            cd /${{ secrets.USERNAME }}/green-api-test-task
+            if [ -f .env.example ]; then
+              mv .env.example .env
+            else
+              echo "Warning: .env.example file not found!"
+            fi
+          EOF
         env:
           SSH_KEY_PASSPHRASE: ${{ secrets.SSH_KEY_PASSPHRASE }}
 
