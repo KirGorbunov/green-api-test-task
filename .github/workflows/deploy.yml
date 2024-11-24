@@ -7,25 +7,28 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest  # Используется последняя версия Ubuntu
+    runs-on: ubuntu-22.04  # Устанавливаем Ubuntu 22.04
 
     steps:
       # Шаг 1: Проверка исходного кода
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Шаг 2: Установка зависимостей для работы с ssh-agent
+      # Шаг 2: Установка ssh-agent, добавление ключа с passphrase
       - name: Set up SSH agent and add SSH key
         run: |
           # Запускаем ssh-agent
           eval $(ssh-agent -s)
-          # Добавляем приватный ключ с passphrase
-          echo "$SSH_KEY_PASSPHRASE" | ssh-add - <<< "$SSH_PRIVATE_KEY"
+          # Сохраняем SSH ключ в файл
+          echo "$SSH_PRIVATE_KEY" > private_key
+          chmod 600 private_key
+          # Добавляем приватный ключ с passphrase в ssh-agent
+          echo "$SSH_KEY_PASSPHRASE" | ssh-add private_key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KEY_PASSPHRASE: ${{ secrets.SSH_KEY_PASSPHRASE }}
 
       # Шаг 3: Подключение и выполнение команд на сервере
       - name: SSH to server and deploy
         run: |
           ssh -o StrictHostKeyChecking=no root@93.183.82.240 "cd /root/green-api-test-task && git pull"
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_KEY_PASSPHRASE: ${{ secrets.SSH_KEY_PASSPHRASE }}
